@@ -1,2 +1,2 @@
 // Test setup file for Jest
-import 'reflect-metadata';
+import "reflect-metadata";
