@@ -2,7 +2,7 @@
 
 ## Architecture Overview
 
-This is a monorepo with Angular frontend (`/frontend`) and NestJS backend (`/backend`) for meal planning and grocery list generation. The backend uses SQLite + TypeORM with domain modules: `meal-plans`, `recipes`, `ingredients`, and `grocery`. Frontend communicates via proxy config that forwards `/api/*` to `localhost:3000`.
+This is a monorepo with Angular frontend (`/frontend`) and NestJS backend (`/backend`) for meal planning and grocery list generation. The backend uses SQLite + TypeORM with domain modules: `meal-plans`, `recipes`, `ingredients`, and `grocery`. Frontend communicates via proxy config (`proxy.conf.json`) that rewrites `/api/*` requests to direct backend routes at `localhost:3000` (e.g., `/api/meal-plans` → `/meal-plans`).
 
 ## Core Domain Model
 
