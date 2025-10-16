@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { GroceryService } from './grocery.service';
 import { GroceryListSummary } from './grocery.types';
 
@@ -9,5 +9,12 @@ export class GroceryController {
   @Get('current')
   async getCurrentList(): Promise<GroceryListSummary | null> {
     return this.groceryService.getCurrentList();
+  }
+
+  @Get('plan/:id')
+  async getListForPlan(
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<GroceryListSummary> {
+    return this.groceryService.getListForPlan(id);
   }
 }

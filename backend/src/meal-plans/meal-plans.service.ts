@@ -15,6 +15,16 @@ export class MealPlansService {
     private readonly recipesService: RecipesService
   ) {}
 
+  async listPlans(): Promise<MealPlan[]> {
+    return this.mealPlanRepository.find({
+      select: ['id', 'startDate', 'endDate', 'createdAt', 'updatedAt'],
+      order: {
+        startDate: 'DESC',
+        createdAt: 'DESC'
+      }
+    });
+  }
+
   async getCurrentPlan(): Promise<MealPlan | null> {
     const [latest] = await this.mealPlanRepository.find({
       order: { createdAt: 'DESC', startDate: 'DESC' },
@@ -29,6 +39,11 @@ export class MealPlansService {
       throw new NotFoundException(`Meal plan ${id} was not found`);
     }
     return plan;
+  }
+
+  async getPlanSummaryById(id: number): Promise<MealPlansSummary> {
+    const plan = await this.getPlanById(id);
+    return this.summarizePlan(plan);
   }
 
   async generateWeeklyPlan(dto: GenerateMealPlanDto): Promise<MealPlan> {

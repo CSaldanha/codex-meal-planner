@@ -45,6 +45,14 @@ export interface MealPlan {
   updatedAt?: string;
 }
 
+export interface MealPlanOverview {
+  id: number;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface MealPlanSummary {
   plan: MealPlan;
   recipes: Recipe[];

@@ -56,5 +56,8 @@
       }
     }
   },
-  "defaultProject": "smart-meal-planner"
+  "defaultProject": "smart-meal-planner",
+  "cli": {
+    "analytics": false
+  }
 }
