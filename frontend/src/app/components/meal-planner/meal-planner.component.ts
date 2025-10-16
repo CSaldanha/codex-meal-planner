@@ -28,13 +28,19 @@ export class MealPlannerComponent implements OnInit {
   recipes: Recipe[] = [];
 
   readonly mealTypes: MealType[] = ['breakfast', 'lunch', 'dinner'];
-  readonly plannerForm = this.fb.nonNullable.group({
-    startDate: ['']
-  });
+  plannerForm!: ReturnType<typeof this.createPlannerForm>;
 
   highlightedRecipeNames = new Set<string>();
 
-  constructor(private readonly api: ApiService, private readonly fb: FormBuilder) {}
+  constructor(private readonly api: ApiService, private readonly fb: FormBuilder) {
+    this.plannerForm = this.createPlannerForm();
+  }
+
+  private createPlannerForm() {
+    return this.fb.nonNullable.group({
+      startDate: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.loadInitialData();

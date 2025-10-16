@@ -21,9 +21,9 @@ async function seed() {
   const recipeRepo = dataSource.getRepository(Recipe);
   const mealPlanRepo = dataSource.getRepository(MealPlan);
 
-  await mealPlanRepo.delete({});
-  await recipeRepo.delete({});
-  await ingredientRepo.delete({});
+  await mealPlanRepo.clear();
+  await recipeRepo.clear();
+  await ingredientRepo.clear();
 
   const ingredientsData = [
     { name: 'Eggs', unit: 'dozen', pricePerUnit: 3.5, category: 'protein' },
@@ -51,7 +51,7 @@ async function seed() {
   ];
 
   const ingredientEntities = await ingredientRepo.save(
-    ingredientsData.map((data) => ingredientRepo.create(data))
+    ingredientsData.map((data) => ingredientRepo.create(data as any)) as any
   );
 
   const findIngredient = (name: string) => {
@@ -186,7 +186,7 @@ async function seed() {
   ];
 
   for (const recipeData of recipesData) {
-    const recipe = recipeRepo.create(recipeData);
+    const recipe = recipeRepo.create(recipeData as any);
     await recipeRepo.save(recipe);
   }
 
