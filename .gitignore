@@ -11,3 +11,13 @@ node_modules
 /frontend/node_modules
 /frontend/package-lock.json
 database.sqlite
+
+# Coverage reports
+coverage/
+**/coverage/
+*.lcov
+clover.xml
+coverage-final.json
+
+# Angular cache
+.angular/
