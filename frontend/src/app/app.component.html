@@ -2,6 +2,12 @@
   <div class="branding">
     <h1>{{ title }}</h1>
     <p>Plan smarter meals, save time shopping, and lower your weekly spend.</p>
+    <div class="savings-banner" *ngIf="hasSavings">
+      <p class="savings-amount">
+        💰 Estimated savings: <strong>{{ potentialSavings | currency }}</strong>
+      </p>
+      <p class="savings-description">with suggested ingredient swaps</p>
+    </div>
   </div>
 </header>
 <main class="app-content">
