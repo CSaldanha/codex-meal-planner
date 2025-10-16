@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { DataSource } from 'typeorm';
+import { DataSource, DeepPartial } from 'typeorm';
 import { Ingredient } from './ingredients/ingredient.entity';
 import { Recipe } from './recipes/recipe.entity';
 import { RecipeIngredient } from './recipes/recipe-ingredient.entity';
@@ -21,11 +21,11 @@ async function seed() {
   const recipeRepo = dataSource.getRepository(Recipe);
   const mealPlanRepo = dataSource.getRepository(MealPlan);
 
-  await mealPlanRepo.delete({});
-  await recipeRepo.delete({});
-  await ingredientRepo.delete({});
+  await mealPlanRepo.clear();
+  await recipeRepo.clear();
+  await ingredientRepo.clear();
 
-  const ingredientsData = [
+  const ingredientsData: DeepPartial<Ingredient>[] = [
     { name: 'Eggs', unit: 'dozen', pricePerUnit: 3.5, category: 'protein' },
     { name: 'Spinach', unit: 'bunch', pricePerUnit: 1.5, category: 'produce' },
     { name: 'Whole Wheat Bread', unit: 'loaf', pricePerUnit: 2.2, category: 'grain' },
@@ -62,7 +62,7 @@ async function seed() {
     return ingredient;
   };
 
-  const recipesData = [
+  const recipesData: DeepPartial<Recipe>[] = [
     {
       name: 'Veggie Omelette',
       description: 'Fluffy eggs with fresh veggies and cheese.',
