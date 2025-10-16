@@ -21,3 +21,9 @@ coverage-final.json
 
 # Angular cache
 .angular/
+
+# Development logs
+*.log
+*-dev.log
+backend-dev.log
+frontend-dev.log
