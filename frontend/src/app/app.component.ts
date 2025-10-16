@@ -23,7 +23,9 @@ export class AppComponent implements OnInit {
   private loadGroceryList(): void {
     this.api.getGroceryList().subscribe({
       next: (grocery) => {
-        this.potentialSavings = grocery.potentialSavings;
+        if (grocery) {
+          this.potentialSavings = grocery.potentialSavings;
+        }
       },
       error: () => {
         // Silently fail - the component will just not show savings
