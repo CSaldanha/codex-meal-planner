@@ -1,0 +1,240 @@
+
+> smart-meal-planner-frontend@0.0.1 start
+> ng serve --open --no-open
+
+Workspace extension with invalid name (defaultProject) found.
+Option "browserTarget" is deprecated: Use 'buildTarget' instead.
+****************************************************************************************
+This is a simple server for use in testing or debugging Angular applications locally.
+It hasn't been reviewed for security issues.
+
+DON'T USE IT FOR PRODUCTION!
+****************************************************************************************
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+
+Initial chunk files   | Names         |  Raw size | Estimated transfer size
+main.js               | main          | 287.59 kB |                80.43 kB
+polyfills.js          | polyfills     | 105.40 kB |                32.18 kB
+styles.css, styles.js | styles        |  94.69 kB |                25.68 kB
+runtime.js            | runtime       |   1.24 kB |               677 bytes
+
+                      | Initial total | 488.93 kB |               138.94 kB
+
+Build at: 2025-09-25T16:38:01.744Z - Hash: 48ab13f0687b2400 - Time: 5528ms
+
+Warning: /Users/clive.saldanha/repos/genai/codex/codex-meal-planner/frontend/src/environments/environment.prod.ts is part of the TypeScript compilation but it's unused.
+Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+Warning: /Users/clive.saldanha/repos/genai/codex/codex-meal-planner/frontend/src/polyfills.ts is part of the TypeScript compilation but it's unused.
+Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+
+
+** Angular Live Development Server is listening on localhost:4200, open your browser on http://localhost:4200/ **
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 288.75 kB |                80.60 kB
+runtime.js          | runtime |   1.24 kB |               676 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T16:45:15.503Z - Hash: 0a6c94515a26e57e - Time: 3530ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+4 unchanged chunks
+
+Build at: 2025-09-25T17:19:12.610Z - Hash: 0a6c94515a26e57e - Time: 830ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 288.99 kB |                80.72 kB
+runtime.js          | runtime |   1.24 kB |               674 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:19:22.835Z - Hash: d1b31df1d24a05d1 - Time: 2994ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 289.26 kB |                80.77 kB
+runtime.js          | runtime |   1.24 kB |               674 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:19:45.645Z - Hash: e1f407a4e96ea299 - Time: 3071ms
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:74:17 - error TS2339: Property 'formatWeekRange' does not exist on type 'MealPlannerComponent'.
+
+74     return this.formatWeekRange(this.plan.startDate, this.plan.endDate);
+                   ~~~~~~~~~~~~~~~
+
+
+
+
+✖ Failed to compile.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 289.04 kB |                80.69 kB
+runtime.js          | runtime |   1.24 kB |               678 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:20:08.969Z - Hash: fbf75b5f659b7e6c - Time: 2938ms
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:74:17 - error TS2339: Property 'formatWeekRange' does not exist on type 'MealPlannerComponent'.
+
+74     return this.formatWeekRange(this.plan.startDate, this.plan.endDate);
+                   ~~~~~~~~~~~~~~~
+
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:115:31 - error TS2339: Property 'toPlanOverview' does not exist on type 'MealPlannerComponent'.
+
+115         const overview = this.toPlanOverview(plan);
+                                  ~~~~~~~~~~~~~~
+
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:116:14 - error TS2339: Property 'upsertPlanOption' does not exist on type 'MealPlannerComponent'.
+
+116         this.upsertPlanOption(overview);
+                 ~~~~~~~~~~~~~~~~
+
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:118:14 - error TS2339: Property 'changePlan' does not exist on type 'MealPlannerComponent'.
+
+118         this.changePlan(plan.id);
+                 ~~~~~~~~~~
+
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:136:33 - error TS2551: Property 'sortPlanOptions' does not exist on type 'MealPlannerComponent'. Did you mean 'planOptions'?
+
+136         this.planOptions = this.sortPlanOptions(plans);
+                                    ~~~~~~~~~~~~~~~
+
+  src/app/components/meal-planner/meal-planner.component.ts:30:3
+    30   planOptions: MealPlanOverview[] = [];
+         ~~~~~~~~~~~
+    'planOptions' is declared here.
+
+
+Error: src/app/components/meal-planner/meal-planner.component.ts:139:16 - error TS2339: Property 'changePlan' does not exist on type 'MealPlannerComponent'.
+
+139           this.changePlan(initialPlan.id);
+                   ~~~~~~~~~~
+
+
+
+
+✖ Failed to compile.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 290.61 kB |                81.09 kB
+runtime.js          | runtime |   1.24 kB |               677 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:20:34.156Z - Hash: 909b7eff89274c61 - Time: 2925ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 290.60 kB |                81.10 kB
+runtime.js          | runtime |   1.24 kB |               678 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:21:30.181Z - Hash: 93c31b7fc79b7b38 - Time: 2872ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 285.97 kB |                79.09 kB
+runtime.js          | runtime |   1.24 kB |               674 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:24:36.494Z - Hash: 64caa02e94ba6020 - Time: 3022ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 286.42 kB |                79.25 kB
+runtime.js          | runtime |   1.24 kB |               676 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:24:50.151Z - Hash: cc596ddca55b2969 - Time: 2994ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 286.37 kB |                79.19 kB
+runtime.js          | runtime |   1.24 kB |               675 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:25:03.528Z - Hash: 81a37dc45d92651c - Time: 2953ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 286.47 kB |                79.18 kB
+runtime.js          | runtime |   1.24 kB |               678 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:25:19.714Z - Hash: c8c8b583b932c520 - Time: 2867ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 286.59 kB |                79.23 kB
+runtime.js          | runtime |   1.24 kB |               677 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:25:43.388Z - Hash: bc3a3943b64f5531 - Time: 2902ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 286.60 kB |                79.25 kB
+runtime.js          | runtime |   1.24 kB |               676 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:25:55.120Z - Hash: c6f63871b872904e - Time: 2765ms
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   |  Raw size | Estimated transfer size
+main.js             | main    | 286.49 kB |                79.34 kB
+runtime.js          | runtime |   1.24 kB |               677 bytes
+
+2 unchanged chunks
+
+Build at: 2025-09-25T17:26:14.072Z - Hash: 4cfbea379d020f61 - Time: 2935ms
+
+✔ Compiled successfully.

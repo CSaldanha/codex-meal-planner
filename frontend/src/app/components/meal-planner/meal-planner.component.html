@@ -1,33 +1,67 @@
-<section class="planner" *ngIf="!loading; else loadingState">
-  <div class="planner-panel">
-    <h2>Create a fresh weekly plan</h2>
-    <form (ngSubmit)="generatePlan()" class="planner-form">
-      <label>
-        <span>Start week on</span>
-        <input type="date" [formControl]="plannerForm.controls.startDate" />
+<section
+  class="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 lg:flex-row lg:items-start lg:gap-10 lg:py-16"
+  *ngIf="!loading; else loadingState"
+>
+  <div
+    class="w-full max-w-xl rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-soft backdrop-blur lg:sticky lg:top-8"
+  >
+    <header class="mb-6">
+      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-primary-500/80">Planner</p>
+      <h2 class="mt-2 text-2xl font-semibold text-slate-900">Create a fresh weekly plan</h2>
+      <p class="mt-2 text-sm text-slate-500">
+        Tune the starting date and highlight favourite recipes before generating a new schedule.
+      </p>
+    </header>
+
+    <form (ngSubmit)="generatePlan()" class="flex flex-col gap-6">
+      <label class="flex flex-col gap-2 text-sm font-semibold text-slate-600">
+        Start week on
+        <input
+          type="date"
+          [formControl]="plannerForm.controls.startDate"
+          class="rounded-2xl border-slate-200 bg-white px-4 py-3 text-base font-normal text-slate-900 shadow-sm ring-1 ring-transparent transition focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-200/60"
+        />
       </label>
-      <div class="highlight-selector">
-        <div class="selector-header">
-          <span>Prioritise recipes ({{ highlightCount }})</span>
-          <small>Select favourites to encourage the planner to schedule them sooner.</small>
+
+      <div class="space-y-4 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-5">
+        <div class="space-y-1">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-sm font-semibold text-slate-600">Prioritise recipes</span>
+            <span
+              class="inline-flex items-center rounded-full bg-primary-500/10 px-3 py-1 text-xs font-semibold text-primary-600"
+            >
+              {{ highlightCount }} selected
+            </span>
+          </div>
+          <p class="text-xs text-slate-500">
+            Spotlight favourites to nudge the planner towards them in the next rotation.
+          </p>
         </div>
-        <div class="highlight-grid">
+
+        <div class="grid gap-4 sm:grid-cols-2">
           <ng-container *ngFor="let type of mealTypes">
-            <div class="highlight-column">
-              <h4 class="type-heading">{{ type | titlecase }}</h4>
-              <ul>
+            <div class="space-y-3">
+              <h3 class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                {{ type | titlecase }}
+              </h3>
+              <ul class="space-y-2">
                 <li *ngFor="let recipe of recipesByType(type)">
-                  <label class="highlight-option">
+                  <label
+                    class="group flex cursor-pointer items-start gap-3 rounded-2xl border border-transparent bg-white/90 px-4 py-3 shadow-sm ring-1 ring-slate-200/60 transition-transform hover:-translate-y-0.5 hover:border-primary-200 hover:ring-primary-200/80"
+                  >
                     <input
                       type="checkbox"
+                      class="mt-1 h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
                       [checked]="isRecipeHighlighted(recipe)"
                       (change)="toggleHighlight(recipe)"
                     />
-                    <span>
-                      {{ recipe.name }}
-                      <small>
+                    <span class="flex flex-col gap-1">
+                      <span class="font-medium text-slate-700 group-hover:text-primary-600">
+                        {{ recipe.name }}
+                      </span>
+                      <span class="text-xs font-medium text-slate-500">
                         {{ recipe.prepTimeMinutes }} min · Serves {{ recipe.servings }}
-                      </small>
+                      </span>
                     </span>
                   </label>
                 </li>
@@ -36,103 +70,207 @@
           </ng-container>
         </div>
       </div>
-      <button type="submit" [disabled]="generating" class="primary-btn">
+
+      <button
+        type="submit"
+        [disabled]="generating"
+        class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary-500 via-primary-500 to-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:from-primary-600 hover:to-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+      >
         {{ generating ? 'Planning…' : 'Generate weekly plan' }}
       </button>
-      <p class="helper-text">
-        Tip: run <code>npm run seed</code> in the backend project to pre-load recipes and
-        ingredients.
+
+      <p class="text-xs text-slate-500">
+        Tip: run
+        <code class="rounded bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-white">npm run seed</code>
+        in the backend project to preload recipes and ingredients.
       </p>
     </form>
   </div>
 
-  <div class="planner-results" *ngIf="hasPlan; else emptyState">
-    <section class="plan-overview">
-      <header>
-        <h2>Weekly menu</h2>
-        <div class="plan-dates">
-          <span>{{ plan?.startDate | date: 'longDate' }}</span>
-          <span>→</span>
-          <span>{{ plan?.endDate | date: 'longDate' }}</span>
-        </div>
-        <p class="plan-generated" *ngIf="planGeneratedAt">
-          Generated {{ planGeneratedAt }}
-        </p>
-      </header>
-      <div class="days-grid">
-        <article class="day-card" *ngFor="let day of sortedDays; trackBy: trackByDate">
-          <h3>{{ formatDate(day.date) }}</h3>
-          <ul>
-            <li *ngFor="let type of mealTypes">
-              <div class="meal-type">{{ type | titlecase }}</div>
-              <div class="meal-details">
-                <strong>{{ day.meals[type]?.recipeName }}</strong>
-                <small *ngIf="recipeForMeal(day, type) as recipe">
-                  {{ recipe.prepTimeMinutes }} min · Serves {{ recipe.servings }}
-                </small>
-              </div>
-            </li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="grocery-section" *ngIf="groceryList">
-      <header>
-        <h2>Smart grocery list</h2>
-        <p>
-          Estimated spend: <strong>{{ groceryList.totalCost | currency }}</strong>
-          <span *ngIf="groceryList.potentialSavings > 0">
-            · Potential savings up to
-            <strong>{{ groceryList.potentialSavings | currency }}</strong> with suggested swaps
-          </span>
-        </p>
-      </header>
-      <div class="grocery-table">
-        <div class="grocery-row grocery-header">
-          <span>Ingredient</span>
-          <span>Quantity</span>
-          <span>Estimated cost</span>
-          <span>Cheaper swap</span>
-        </div>
-        <div class="grocery-row" *ngFor="let item of groceryList.items">
-          <span>
-            <strong>{{ item.ingredient.name }}</strong>
-            <small class="category">{{ item.ingredient.category | titlecase }}</small>
-          </span>
-          <span>{{ item.totalQuantity | number: '1.0-2' }} {{ item.unit }}</span>
-          <span>{{ item.estimatedCost | currency }}</span>
-          <span *ngIf="item.substitution; else noSwap">
-            <div class="swap-suggestion">
-              <strong>{{ item.substitution?.name }}</strong>
-              <small>
-                Save approx. {{ item.potentialSavings || 0 | currency }} ({{
-                  item.substitution?.pricePerUnit | currency
-                }}/{{ item.substitution?.unit }})
-              </small>
+  <div class="flex-1 space-y-8" *ngIf="planOptions.length > 0; else emptyState">
+    <div class="relative">
+      <div
+        class="space-y-8 transition-opacity duration-300"
+        [class.opacity-50]="planDetailsLoading"
+        *ngIf="plan; else planUnavailable"
+      >
+        <section class="rounded-3xl border border-slate-200/70 bg-white/80 p-8 shadow-soft backdrop-blur">
+          <header class="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+            <div class="space-y-2">
+              <h2 class="text-2xl font-semibold text-slate-900">Weekly menu</h2>
+              <p class="text-sm text-slate-500" *ngIf="currentWeekLabel as weekLabel">
+                {{ weekLabel }}
+              </p>
             </div>
-          </span>
-          <ng-template #noSwap>
-            <span class="no-swap">Best price found</span>
-          </ng-template>
-        </div>
+            <div class="w-full max-w-xs space-y-2">
+              <label class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                Viewing week
+              </label>
+              <select
+                class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-200/60 disabled:opacity-60"
+                [value]="selectedPlanId ?? ''"
+                (change)="onPlanSelect($event)"
+                [disabled]="planDetailsLoading || generating"
+              >
+                <option *ngFor="let option of planOptions" [value]="option.id">
+                  {{ planOptionLabel(option) }}
+                </option>
+              </select>
+              <p class="text-xs text-slate-400" *ngIf="planGeneratedAt">
+                Generated {{ planGeneratedAt }}
+              </p>
+            </div>
+          </header>
+
+          <div class="mt-6 space-y-5">
+            <article
+              class="relative flex flex-col gap-4 rounded-3xl border border-slate-100 bg-gradient-to-b from-white to-slate-50/70 p-6 shadow-sm ring-1 ring-transparent transition hover:-translate-y-1 hover:border-primary-200 hover:shadow-xl hover:ring-primary-200/80"
+              *ngFor="let day of sortedDays; let i = index; trackBy: trackByDate"
+            >
+              <div class="absolute -left-3 top-8 hidden h-full w-1 bg-gradient-to-b from-primary-200 via-primary-300 to-transparent sm:block"></div>
+              <header class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary-500/10 text-sm font-semibold text-primary-600">
+                    {{ i + 1 }}
+                  </span>
+                  <div>
+                    <h3 class="text-lg font-semibold text-slate-800">{{ formatDate(day.date) }}</h3>
+                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Day {{ i + 1 }}</p>
+                  </div>
+                </div>
+              </header>
+
+              <ul class="space-y-4">
+                <li *ngFor="let type of mealTypes" class="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
+                  <span class="inline-flex w-28 shrink-0 items-center justify-start text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">
+                    {{ type | titlecase }}
+                  </span>
+                  <div class="flex flex-1 flex-col gap-1 rounded-2xl bg-white/90 px-4 py-3 shadow-inner shadow-slate-200/40">
+                    <span class="text-sm font-semibold text-slate-800">
+                      {{ day.meals[type]?.recipeName }}
+                    </span>
+                    <span
+                      class="text-xs text-slate-500"
+                      *ngIf="recipeForMeal(day, type) as recipe"
+                    >
+                      {{ recipe.prepTimeMinutes }} min · Serves {{ recipe.servings }}
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section
+          class="rounded-3xl border border-slate-200/70 bg-white/85 p-8 shadow-soft backdrop-blur"
+          *ngIf="groceryList"
+        >
+          <header class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 class="text-2xl font-semibold text-slate-900">Smart grocery list</h2>
+              <p class="mt-1 text-sm text-slate-500">
+                Estimated spend
+                <span class="font-semibold text-slate-900">{{ groceryList.totalCost | currency }}</span>
+                <span *ngIf="groceryList.potentialSavings > 0">
+                  · Potential savings up to
+                  <span class="font-semibold text-primary-600">
+                    {{ groceryList.potentialSavings | currency }}
+                  </span>
+                  with suggested swaps
+                </span>
+              </p>
+            </div>
+          </header>
+
+          <div class="mt-6 space-y-3">
+            <div class="hidden grid-cols-[2fr_repeat(3,minmax(0,1fr))] gap-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 md:grid">
+              <span>Ingredient</span>
+              <span>Quantity</span>
+              <span>Estimated cost</span>
+              <span>Cheaper swap</span>
+            </div>
+
+            <div class="grid gap-3">
+              <article
+                *ngFor="let item of groceryList.items"
+                class="grid grid-cols-1 gap-4 rounded-2xl border border-slate-100 bg-slate-50/60 p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-primary-200 hover:shadow-md md:grid-cols-[2fr_repeat(3,minmax(0,1fr))]"
+              >
+                <div>
+                  <p class="font-semibold text-slate-800">{{ item.ingredient.name }}</p>
+                  <p class="mt-1 inline-flex items-center gap-2 text-xs text-slate-500">
+                    <span class="rounded-full bg-slate-200/70 px-2 py-0.5 font-medium text-slate-600">
+                      {{ item.ingredient.category | titlecase }}
+                    </span>
+                  </p>
+                </div>
+
+                <p class="text-sm font-medium text-slate-600">
+                  {{ item.totalQuantity | number: '1.0-2' }} {{ item.unit }}
+                </p>
+
+                <p class="text-sm font-semibold text-slate-700">
+                  {{ item.estimatedCost | currency }}
+                </p>
+
+                <div class="text-sm" *ngIf="item.substitution; else bestPrice">
+                  <p class="font-semibold text-emerald-600">{{ item.substitution?.name }}</p>
+                  <p class="text-xs text-emerald-600/80">
+                    Save approx. {{ item.potentialSavings || 0 | currency }} · {{
+                      item.substitution?.pricePerUnit | currency
+                    }}/{{ item.substitution?.unit }}
+                  </p>
+                </div>
+                <ng-template #bestPrice>
+                  <p class="inline-flex items-center rounded-full bg-slate-200/70 px-3 py-1 text-xs font-semibold text-slate-500">
+                    Best price found
+                  </p>
+                </ng-template>
+              </article>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+
+      <div
+        *ngIf="planDetailsLoading"
+        class="pointer-events-none absolute inset-0 flex items-center justify-center"
+      >
+        <div class="h-10 w-10 rounded-full border-4 border-slate-200 border-t-primary-500 animate-spin" aria-hidden="true"></div>
+      </div>
+    </div>
   </div>
 </section>
 
+<ng-template #planUnavailable>
+  <div class="flex flex-col items-center justify-center rounded-3xl border border-dashed border-amber-200 bg-white/80 p-10 text-center text-sm text-amber-700 shadow-soft">
+    <p class="font-semibold">We couldn’t load that week right now.</p>
+    <p class="mt-2 text-amber-600">Pick another week or generate a fresh meal plan.</p>
+  </div>
+</ng-template>
+
 <ng-template #loadingState>
-  <div class="state state--loading">
-    <div class="spinner" aria-hidden="true"></div>
-    <p>Loading your saved meal plan…</p>
+  <div class="mx-auto flex max-w-md flex-col items-center gap-6 rounded-3xl border border-slate-200/80 bg-white/90 p-10 text-center shadow-soft">
+    <div class="h-12 w-12 rounded-full border-4 border-slate-200 border-t-primary-500 animate-spin" aria-hidden="true"></div>
+    <div class="space-y-2">
+      <p class="text-base font-semibold text-slate-800">Loading your saved meal plan…</p>
+      <p class="text-sm text-slate-500">We are fetching menu details and grocery savings.</p>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #emptyState>
-  <div class="state state--empty">
-    <h2>No plan yet</h2>
-    <p>Use the planner form to generate your first schedule and shopping list.</p>
+  <div class="flex flex-1 flex-col items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white/80 p-12 text-center shadow-soft">
+    <h2 class="text-2xl font-semibold text-slate-900">No plan yet</h2>
+    <p class="mt-2 max-w-sm text-sm text-slate-500">
+      Use the planner form to generate your first schedule and smart shopping list.
+    </p>
   </div>
 </ng-template>
 
-<p class="state state--error" *ngIf="errorMessage">{{ errorMessage }}</p>
+<p
+  class="mx-auto mt-6 max-w-3xl rounded-2xl border border-rose-200 bg-rose-50 px-6 py-4 text-sm font-medium text-rose-700 shadow-sm"
+  *ngIf="errorMessage"
+>
+  {{ errorMessage }}
+</p>

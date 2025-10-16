@@ -23,6 +23,11 @@ export class GroceryService {
     return this.createFromSummary(await this.mealPlansService.summarizePlan(plan));
   }
 
+  async getListForPlan(planId: number): Promise<GroceryListSummary> {
+    const summary = await this.mealPlansService.getPlanSummaryById(planId);
+    return this.createFromSummary(summary);
+  }
+
   async createFromSummary(
     summary: MealPlansSummary
   ): Promise<GroceryListSummary> {

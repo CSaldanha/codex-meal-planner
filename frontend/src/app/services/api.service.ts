@@ -6,6 +6,7 @@ import {
   GenerateMealPlanRequest,
   GroceryListSummary,
   MealPlan,
+  MealPlanOverview,
   MealPlanSummary,
   Recipe
 } from '../types';
@@ -20,6 +21,10 @@ export class ApiService {
     return this.http.get<MealPlan | null>(`${this.baseUrl}/meal-plans/current`);
   }
 
+  getMealPlansOverview(): Observable<MealPlanOverview[]> {
+    return this.http.get<MealPlanOverview[]>(`${this.baseUrl}/meal-plans`);
+  }
+
   generateMealPlan(payload: GenerateMealPlanRequest): Observable<MealPlan> {
     return this.http.post<MealPlan>(`${this.baseUrl}/meal-plans/generate`, payload);
   }
@@ -30,9 +35,19 @@ export class ApiService {
     );
   }
 
+  getMealPlanSummaryById(id: number): Observable<MealPlanSummary> {
+    return this.http.get<MealPlanSummary>(`${this.baseUrl}/meal-plans/${id}/summary`);
+  }
+
   getGroceryList(): Observable<GroceryListSummary | null> {
     return this.http.get<GroceryListSummary | null>(
       `${this.baseUrl}/grocery-list/current`
+    );
+  }
+
+  getGroceryListForPlan(id: number): Observable<GroceryListSummary> {
+    return this.http.get<GroceryListSummary>(
+      `${this.baseUrl}/grocery-list/plan/${id}`
     );
   }
 

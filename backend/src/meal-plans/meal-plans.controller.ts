@@ -11,18 +11,27 @@ import { MealPlansService } from './meal-plans.service';
 import { GenerateMealPlanDto } from './dto/generate-meal-plan.dto';
 import { MealPlansSummary } from '../grocery/grocery.types';
 
+type MealPlanOverview = Pick<MealPlan, 'id' | 'startDate' | 'endDate' | 'createdAt' | 'updatedAt'>;
+
 @Controller('meal-plans')
 export class MealPlansController {
   constructor(private readonly mealPlansService: MealPlansService) {}
 
+  @Get()
+  async listPlans(): Promise<MealPlanOverview[]> {
+    const plans = await this.mealPlansService.listPlans();
+    return plans.map(({ id, startDate, endDate, createdAt, updatedAt }) => ({
+      id,
+      startDate,
+      endDate,
+      createdAt,
+      updatedAt
+    }));
+  }
+
   @Get('current')
   async getCurrentPlan(): Promise<MealPlan | null> {
     return this.mealPlansService.getCurrentPlan();
-  }
-
-  @Get(':id')
-  async getPlanById(@Param('id', ParseIntPipe) id: number): Promise<MealPlan> {
-    return this.mealPlansService.getPlanById(id);
   }
 
   @Get('current/summary')
@@ -32,6 +41,18 @@ export class MealPlansController {
       return null;
     }
     return this.mealPlansService.summarizePlan(plan);
+  }
+
+  @Get(':id/summary')
+  async getSummaryById(
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<MealPlansSummary> {
+    return this.mealPlansService.getPlanSummaryById(id);
+  }
+
+  @Get(':id')
+  async getPlanById(@Param('id', ParseIntPipe) id: number): Promise<MealPlan> {
+    return this.mealPlansService.getPlanById(id);
   }
 
   @Post('generate')

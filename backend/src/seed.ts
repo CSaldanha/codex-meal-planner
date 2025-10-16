@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Ingredient } from './ingredients/ingredient.entity';
+import type { IngredientCategory } from './ingredients/ingredient.entity';
 import { Recipe } from './recipes/recipe.entity';
+import type { MealType } from './recipes/recipe.entity';
 import { RecipeIngredient } from './recipes/recipe-ingredient.entity';
 import { MealPlan } from './meal-plans/meal-plan.entity';
 import { MealPlansService } from './meal-plans/meal-plans.service';
@@ -21,9 +23,9 @@ async function seed() {
   const recipeRepo = dataSource.getRepository(Recipe);
   const mealPlanRepo = dataSource.getRepository(MealPlan);
 
-  await mealPlanRepo.delete({});
-  await recipeRepo.delete({});
-  await ingredientRepo.delete({});
+  await mealPlanRepo.clear();
+  await recipeRepo.clear();
+  await ingredientRepo.clear();
 
   const ingredientsData = [
     { name: 'Eggs', unit: 'dozen', pricePerUnit: 3.5, category: 'protein' },
@@ -51,7 +53,12 @@ async function seed() {
   ];
 
   const ingredientEntities = await ingredientRepo.save(
-    ingredientsData.map((data) => ingredientRepo.create(data))
+    ingredientsData.map((data) =>
+      ingredientRepo.create({
+        ...data,
+        category: data.category as IngredientCategory
+      })
+    )
   );
 
   const findIngredient = (name: string) => {
@@ -186,7 +193,10 @@ async function seed() {
   ];
 
   for (const recipeData of recipesData) {
-    const recipe = recipeRepo.create(recipeData);
+    const recipe = recipeRepo.create({
+      ...recipeData,
+      mealType: recipeData.mealType as MealType
+    });
     await recipeRepo.save(recipe);
   }
 
